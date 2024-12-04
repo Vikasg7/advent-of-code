@@ -19,7 +19,7 @@ function DoMultSum(instructions)
       i = i + 6
     elseif (string.sub(instructions, i, i+3) == "mul(") then
       local s, e, x, y = string.find(instructions, "mul%((%d+),(%d+)%)", i)
-      if s == i and e then
+      if s == i then
         if (enabled) then
           sum = sum + (tonumber(x) * tonumber(y))
         end

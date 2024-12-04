@@ -38,7 +38,7 @@ function Main()
   print("Part2:", DoMultSum(instructions))
 end
 
--- cat 2024/input/03.txt | ./2024/03.lua
+-- time cat 2024/input/03.txt | ./2024/03.lua
 -- Part1:  164730528
 -- Part2:  70478672
 Main()

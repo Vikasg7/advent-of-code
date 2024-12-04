@@ -49,7 +49,7 @@ function Main()
   print("Part2:", SimilarityScore(left, right))
 end
 
--- cat 2024/input/01.txt | ./2024/01.lua
+-- time cat 2024/input/01.txt | ./2024/01.lua
 -- Part1:  2057374
 -- Part2:  23177084
 Main()

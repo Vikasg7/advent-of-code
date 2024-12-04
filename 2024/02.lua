@@ -81,7 +81,7 @@ function Main()
   print("Part2:", SafeReportCountImproved(reports))
 end
 
--- cat 2024/input/02.txt | ./2024/02.lua
+-- time cat 2024/input/02.txt | ./2024/02.lua
 -- Part1:  598
 -- Part2:  634
 Main()

@@ -30,27 +30,29 @@ function ParseInput()
   return afters, befores, updates
 end
 
+function IsValidUpdate(afters, befores, update)
+  for p = 1, #update do
+    local page = update[p]
+    local as, bs = afters[page] or {}, befores[page] or {}
+    -- check if pages before p exists in after(as) list 
+    for b = 1, p-1 do
+      if table.contains(as, update[b]) then return false end
+    end
+    -- check if pages after p exists in before(bs) list
+    for a = p+1, #update do
+      if table.contains(bs, update[a]) then return false end
+    end
+  end
+  return true
+end
+
 function RightOrderUpdatesSum(afters, befores, updates)
   local sum, wrongUpdates = 0, {}
   for u = 1, #updates do
     local update = updates[u]
-    for p = 1, #update do
-      local page = update[p]
-      local as, bs = afters[page] or {}, befores[page] or {}
-      -- check if pages before p exists in after(as) list 
-      for b = 1, p-1 do
-        if table.contains(as, update[b]) then
-          table.insert(wrongUpdates, update)
-          goto next_update
-        end
-      end
-      -- check if pages after p exists in before(bs) list
-      for a = p+1, #update do
-        if table.contains(bs, update[a]) then
-          table.insert(wrongUpdates, update)
-          goto next_update
-        end
-      end
+    if not IsValidUpdate(afters, befores, update) then
+      table.insert(wrongUpdates, update)
+      goto next_update
     end
     sum = sum + tonumber(update[math.ceil(#update/2)])
     ::next_update::

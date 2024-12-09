@@ -2,27 +2,26 @@
 
 function ParseInput()
   local board = {}
-  local guardPos = {r=0, c=0}
+  local guard_pos = {r=0, c=0}
   local r = 1
   for line in io.lines() do
     local row = {}
-    local c = 1
+    local s = string.find(line, "%^")
+    if s then
+      guard_pos.r = r
+      guard_pos.c = s
+    end
     for char in string.gmatch(line, ".") do
-      if char == "^" then
-        guardPos.r = r
-        guardPos.c = c
-      end
       table.insert(row, char)
-      c = c + 1
     end
     table.insert(board, row)
     r = r + 1
   end
-  return board, guardPos
+  return board, guard_pos
 end
 
-function DistinctPosCnt(board, guardPos)
-  local r, c = guardPos.r, guardPos.c
+function DistinctPosCnt(board, guard_pos)
+  local r, c = guard_pos.r, guard_pos.c
   local dr, dc = -1, 0
   local count = 1
   repeat
@@ -39,63 +38,56 @@ function DistinctPosCnt(board, guardPos)
   return count
 end
 
-function IsObstacleOnRight(obstacles, r, c, dr, dc)
-  dr, dc = dc, -dr -- turning right
-  for o = 1, #obstacles do
-    local obstacle, direction = table.unpack(obstacles[o])
-    local y, x = obstacle[1], obstacle[2]
-    local m, n = direction[1], direction[2]
-    -- making sure we hit the same obstacle from the same direction
-    if not (dr == m and dc == n) then goto next_obstacle end
-    if dr == 0 then
-      if y == r and ((x - c) * dc) > 0 then
-        return true
-      end
-    elseif dc == 0 then
-      if x == c and ((y - r) * dr) > 0 then
-        return true
-      end
-    end
-    ::next_obstacle::
-  end
-  return false
-end
-
-function GhostObstacleCnt(board, guardPos)
-  local r, c = guardPos.r, guardPos.c
+function DetectLoops(board, guard_pos, marker)
+  local r, c = guard_pos.r, guard_pos.c
   local dr, dc = -1, 0
-  local newObsCnt = 0
-  local obstacles = {}
-  local obsCnt = 0
   repeat
+    local marker_with_direction = string.format("%s-%d-%d", marker, dr, dc)
+    if board[r][c] == marker_with_direction then
+      return true
+    end
     if board[r][c] == "#" then
-      table.insert(obstacles, {{r, c}, {dr, dc}})
-      obsCnt = obsCnt + 1
       r, c = r - dr, c - dc
       -- turn 90 degree
       dr, dc = dc, -dr
-    end
-    local nr, nc = r+dr, c+dc
-    if obsCnt > 2 and
-       not (nr == guardPos.r and nc == guardPos.c) and
-       not (nr < 1 or nr > #board or nc < 1 or nc > #board[1]) and
-       board[nr][nc] ~= "#" and
-       IsObstacleOnRight(obstacles, r, c, dr, dc) then
-      newObsCnt = newObsCnt + 1
+    else
+      board[r][c] = marker_with_direction
     end
     r, c = r + dr, c + dc
   until r < 1 or r > #board or c < 1 or c > #board[1]
-  return newObsCnt
+  return false
+end
+
+function GhostObstacleCnt(board, guard_pos)
+  local count = 0
+  for r = 1, #board do
+    for c = 1, #board[1] do
+      if (r == guard_pos.r and c == guard_pos.c) or
+         board[r][c] == "#" then -- ignoring already marked obstacles
+        goto next_pos
+      end
+
+      board[r][c] = "#"
+
+      if DetectLoops(board, guard_pos, string.format("%d-%d", r, c)) then
+        count = count + 1
+      end
+
+      board[r][c] = "."
+
+      ::next_pos::
+    end
+  end
+  return count
 end
 
 function Main()
-  local board, guardPos = ParseInput()
-  print("Part1:", DistinctPosCnt(board, guardPos))
-  -- part2 doesn't work and I don't care
-  print("Part2:", GhostObstacleCnt(board, guardPos))
+  local board, guard_pos = ParseInput()
+  print("Part1:", DistinctPosCnt(board, guard_pos))
+  print("Part2:", GhostObstacleCnt(board, guard_pos))
 end
 
 -- time cat 2024/input/06.txt | ./2024/06.lua
 -- Part1:  4789
--- Part2:  
+-- Part2:  1304
 Main()

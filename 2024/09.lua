@@ -95,7 +95,6 @@ function Gold(disk_map)
       end
       if lblock.len == rblock.len then
         disk_map[idxL], disk_map[idxR] = disk_map[idxR], disk_map[idxL]
-        -- PrintDiskMap(disk_map)
         idxR = idxR - 1
         goto next_rblock
       end

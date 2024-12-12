@@ -1,5 +1,7 @@
 #!/usr/bin/env lua
 
+require("2024.utils")
+
 function ParseInput()
   local disk_map = {}
   local input = io.read("*l")
@@ -13,18 +15,6 @@ function ParseInput()
     idx = idx + 1
   end
   return disk_map
-end
-
-function table.deep_copy(original)
-  local copy = {}
-  for k, v in pairs(original) do
-    if type(v) == "table" then
-      copy[k] = table.deep_copy(v)
-    else
-      copy[k] = v
-    end
-  end
-  return copy
 end
 
 function PrintDiskMap(disk_map)

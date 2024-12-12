@@ -1,5 +1,7 @@
 #!/usr/bin/env lua
 
+require("2024.utils")
+
 function ParseInput()
   local nums = {}
   while true do
@@ -10,18 +12,6 @@ function ParseInput()
     nums[tostring(a)] = 1
   end
   return nums
-end
-
-function table.deep_copy(original)
-  local copy = {}
-  for k, v in pairs(original) do
-    if type(v) == "table" then
-      copy[k] = table.deep_copy(v)
-    else
-      copy[k] = v
-    end
-  end
-  return copy
 end
 
 function ApplyRule(num)

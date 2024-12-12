@@ -1,13 +1,6 @@
 #!/usr/bin/env lua
 
-function table.contains(list, needle)
-  for i = 1, #list do
-    if list[i] == needle then
-      return true
-    end
-  end
-  return false
-end
+require("2024.utils")
 
 function ParseInput()
   local rulesTxt, updatesTxt = string.match(io.read("*a"), "(.+)\n\n(.+)")

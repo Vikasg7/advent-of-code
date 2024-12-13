@@ -92,7 +92,7 @@ end
 
 DIRECTIONS = {{1,0}, {0,1}, {0,-1}, {-1,0}}
 
-function Silver(garden)
+function FenceCost(garden, calc_perimeter)
   local visited, queue = {}, {}
   local total_cost = 0
   for r = 1, #garden do
@@ -100,23 +100,7 @@ function Silver(garden)
       local region = GetRegion(garden, queue, visited, {r=r, c=c})
       local area, perimeter = #region, 0
       for _, plot in ipairs(region) do
-        perimeter = perimeter + CalcPerimeter(garden, plot)
-      end
-      total_cost = total_cost + (area * perimeter)
-    end
-  end
-  return total_cost
-end
-
-function Gold(garden)
-  local visited, queue = {}, {}
-  local total_cost = 0
-  for r = 1, #garden do
-    for c = 1, #garden[1] do
-      local region = GetRegion(garden, queue, visited, {r=r, c=c})
-      local area, perimeter = #region, 0
-      for _, plot in ipairs(region) do
-        perimeter = perimeter + CalcSides(garden, plot)
+        perimeter = perimeter + calc_perimeter(garden, plot)
       end
       total_cost = total_cost + (area * perimeter)
     end
@@ -126,8 +110,8 @@ end
 
 function Main()
   local garden = ParseInput()
-  print("Part1:", Silver(garden))
-  print("Part2:", Gold(garden))
+  print("Part1:", FenceCost(garden, CalcPerimeter))
+  print("Part2:", FenceCost(garden, CalcSides))
 end
 
 -- time cat 2024/input/12.txt | ./2024/12.lua

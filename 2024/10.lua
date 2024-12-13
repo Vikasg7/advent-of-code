@@ -72,26 +72,18 @@ function TrailheadRating(map, pos)
   return sum
 end
 
-function Silver(map, trailheads)
+function MeasureTrailheads(map, trailheads, measure_fn)
   local sum = 0
   for _, trailhead in pairs(trailheads) do
-    sum = sum + TrailheadScore(map, trailhead)
-  end
-  return sum
-end
-
-function Gold(map, trailheads)
-  local sum = 0
-  for _, trailhead in pairs(trailheads) do
-    sum = sum + TrailheadRating(map, trailhead)
+    sum = sum + measure_fn(map, trailhead)
   end
   return sum
 end
 
 function Main()
   local map, trailheads = ParseInput()
-  print("Part1:", Silver(map, trailheads))
-  print("Part1:", Gold(map, trailheads))
+  print("Part1:", MeasureTrailheads(map, trailheads, TrailheadScore))
+  print("Part1:", MeasureTrailheads(map, trailheads, TrailheadRating))
 end
 
 -- time cat 2024/input/10.txt | ./2024/10.lua

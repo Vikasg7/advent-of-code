@@ -33,7 +33,7 @@ function PrintDiskMap(disk_map)
   print(table.concat(disk_repr, ""))
 end
 
-function Silver(disk_map)
+function CompactDriveByBlocks(disk_map)
   local idxL = 1
   local idxR = #disk_map % 2 == 1 and #disk_map or #disk_map - 1
   local i, sum = 0, 0
@@ -67,7 +67,7 @@ function Silver(disk_map)
   return sum
 end
 
-function Gold(disk_map)
+function CompactingDriveByFiles(disk_map)
   local idxR = disk_map[#disk_map].contain_files and #disk_map or #disk_map - 1
   while idxR > 1 do
     local rblock = disk_map[idxR]
@@ -124,8 +124,8 @@ end
 function Main()
   local disk_map = ParseInput()
   local disk_map_copy = table.deep_copy(disk_map)
-  print("Part1:", Silver(disk_map))
-  print("Part2:", Gold(table.deep_copy(disk_map_copy)))
+  print("Part1:", CompactDriveByBlocks(disk_map))
+  print("Part2:", CompactingDriveByFiles(table.deep_copy(disk_map_copy)))
 end
 
 -- time cat 2024/input/09.txt | ./2024/09.lua

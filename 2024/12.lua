@@ -60,14 +60,14 @@ end
 function CalcSides(garden, plot)
   local plot_type = garden[plot.r][plot.c]
   local L, R, T, B, TL, TR, BL, BR
-  L =  InBounds(#garden, #garden[1], plot.r  , plot.c-1 ) and garden[plot.r  ][plot.c-1] == plot_type
-  R =  InBounds(#garden, #garden[1], plot.r  , plot.c+1 ) and garden[plot.r  ][plot.c+1] == plot_type
-  T =  InBounds(#garden, #garden[1], plot.r-1, plot.c   ) and garden[plot.r-1][plot.c  ] == plot_type
-  B =  InBounds(#garden, #garden[1], plot.r+1, plot.c   ) and garden[plot.r+1][plot.c  ] == plot_type
-  TL = InBounds(#garden, #garden[1], plot.r-1, plot.c-1 ) and garden[plot.r-1][plot.c-1] == plot_type
-  TR = InBounds(#garden, #garden[1], plot.r-1, plot.c+1 ) and garden[plot.r-1][plot.c+1] == plot_type
-  BL = InBounds(#garden, #garden[1], plot.r+1, plot.c-1 ) and garden[plot.r+1][plot.c-1] == plot_type
-  BR = InBounds(#garden, #garden[1], plot.r+1, plot.c+1 ) and garden[plot.r+1][plot.c+1] == plot_type
+  L =  InBounds(#garden, #garden[1], plot.r  , plot.c-1) and garden[plot.r  ][plot.c-1] == plot_type
+  R =  InBounds(#garden, #garden[1], plot.r  , plot.c+1) and garden[plot.r  ][plot.c+1] == plot_type
+  T =  InBounds(#garden, #garden[1], plot.r-1, plot.c  ) and garden[plot.r-1][plot.c  ] == plot_type
+  B =  InBounds(#garden, #garden[1], plot.r+1, plot.c  ) and garden[plot.r+1][plot.c  ] == plot_type
+  TL = InBounds(#garden, #garden[1], plot.r-1, plot.c-1) and garden[plot.r-1][plot.c-1] == plot_type
+  TR = InBounds(#garden, #garden[1], plot.r-1, plot.c+1) and garden[plot.r-1][plot.c+1] == plot_type
+  BL = InBounds(#garden, #garden[1], plot.r+1, plot.c-1) and garden[plot.r+1][plot.c-1] == plot_type
+  BR = InBounds(#garden, #garden[1], plot.r+1, plot.c+1) and garden[plot.r+1][plot.c+1] == plot_type
 
   local external_edges =
     ((not L and not TL and not T) and 1 or 0) +

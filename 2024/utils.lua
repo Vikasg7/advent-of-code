@@ -21,4 +21,8 @@ function table.contains(list, needle)
   return false
 end
 
+function math.is_integer(num)
+  return num == math.floor(num)
+end
+
 return utils

@@ -1,7 +1,5 @@
 #!/usr/bin/env lua
 
-require("2024.utils")
-
 function ParseInput()
   local configs = { }
   while true do

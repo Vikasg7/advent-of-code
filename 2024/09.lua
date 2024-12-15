@@ -69,23 +69,21 @@ end
 
 function MoveFiles(disk_map)
   local idxR = disk_map[#disk_map].contain_files and #disk_map or #disk_map - 1
+  local idxL
   while idxR > 1 do
     local rblock = disk_map[idxR]
     if not rblock.contain_files then
-      idxR = idxR - 1
       goto next_rblock
     end
-    local idxL = 1
+    idxL = 1
     while idxL < idxR do
       local lblock = disk_map[idxL]
       if lblock.contain_files or
          lblock.len < rblock.len then
-        idxL = idxL + 1
         goto next_lblock
       end
       if lblock.len == rblock.len then
         disk_map[idxL], disk_map[idxR] = disk_map[idxR], disk_map[idxL]
-        idxR = idxR - 1
         goto next_rblock
       end
       if lblock.len > rblock.len then
@@ -96,14 +94,13 @@ function MoveFiles(disk_map)
         })
         lblock.len = lblock.len - rblock.len
         rblock.contain_files = false
-        idxR = idxR - 1
         goto next_rblock
       end
-      idxL = idxL + 1
       ::next_lblock::
+      idxL = idxL + 1
     end
-    idxR = idxR - 1
     ::next_rblock::
+    idxR = idxR - 1
   end
 
   local sum, i = 0, 0

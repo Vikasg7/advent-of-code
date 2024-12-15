@@ -40,10 +40,10 @@ function AntiNodeCount(antenna_graph, rows, cols)
         local ax, ay = x - dx, y - dy -- AntiNode1
         local aax, aay = xx + dx, yy + dy -- AntiNode2
         if InBounds(rows, cols, ax, ay) then
-          antinodes[string.format("%d-%d", ax, ay)] = true
+          antinodes[(ax*cols)+ay] = true
         end
         if InBounds(rows, cols, aax, aay) then
-          antinodes[string.format("%d-%d", aax, aay)] = true
+          antinodes[(aax*cols)+aay] = true
         end
       end
     end
@@ -61,11 +61,11 @@ function AntiNodeCountWithResonantHarmonics(antenna_graph, rows, cols)
         local dx, dy = xx - x, yy - y -- distance (Antenna2 - Antenna2)
         local ax, ay, aax, aay = x, y, xx, yy
         while InBounds(rows, cols, ax, ay) do
-          antinodes[string.format("%d-%d", ax, ay)] = true
+          antinodes[(ax*cols)+ay] = true
           ax, ay = ax - dx, ay - dy -- AntiNode1
         end
         while InBounds(rows, cols, aax, aay) do
-          antinodes[string.format("%d-%d", aax, aay)] = true
+          antinodes[(aax*cols)+aay] = true
           aax, aay = aax + dx, aay + dy -- AntiNode2
         end
       end

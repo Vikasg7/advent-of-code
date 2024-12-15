@@ -48,7 +48,7 @@ function TrailheadScore(map, pos)
   while #neighbors ~= 0 do
     pos = table.remove(neighbors, 1)
     if map[pos.r][pos.c] == 9 then
-      local key = string.format("%d-%d", pos.r, pos.c)
+      local key = (pos.r * #map[1]) + pos.c
       if not visited[key] then
         sum = sum + 1
         visited[key] = true

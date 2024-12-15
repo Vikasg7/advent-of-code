@@ -42,7 +42,7 @@ function DetectLoops(board, guard_pos, marker)
   local r, c = guard_pos.r, guard_pos.c
   local dr, dc = -1, 0
   repeat
-    local marker_with_direction = string.format("%s-%d-%d", marker, dr, dc)
+    local marker_with_direction = (marker * 10) + ((dr + 1) * 3 + (dc + 1))
     if board[r][c] == marker_with_direction then
       return true
     end
@@ -69,7 +69,7 @@ function GhostObstacleCnt(board, guard_pos)
 
       board[r][c] = "#"
 
-      if DetectLoops(board, guard_pos, string.format("%d-%d", r, c)) then
+      if DetectLoops(board, guard_pos, (r * #board[1]) + c) then
         count = count + 1
       end
 

@@ -45,7 +45,7 @@ function GetRegion(garden, queue, visited, plot)
   table.insert(queue, plot)
   while #queue > 0 do
     plot = table.remove(queue, 1)
-    local key = string.format("%d-%d", plot.r, plot.c)
+    local key = (plot.r * #garden[1]) + plot.c
     if visited[key] then
       goto next_plot
     end

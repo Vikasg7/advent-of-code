@@ -104,10 +104,21 @@ end
 function SumGPSCoordsScaled(board, moves, robot_pos)
   local nr, nc, idx
   for _, move in ipairs(moves) do
+    -- shortcuting early for performance boost
+    nr, nc = robot_pos.r + move.dr, robot_pos.c + move.dc
+    if board[nr][nc] == "#" then
+      goto next_move
+    end
+
+    if board[nr][nc] == "." then
+      robot_pos.r, robot_pos.c = nr, nc
+      goto next_move
+    end
+
+    -- finding the movable boxes
     local q, seen, seen_cnt = {}, {}, 0
     table.insert(q, robot_pos)
 
-    -- finding the movable boxes
     while #q > 0 do
       local pos = table.remove(q, 1)
       idx = (pos.r * #board[1]) + pos.c

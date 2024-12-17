@@ -153,13 +153,16 @@ function SumGPSCoordsScaled(board, moves, robot_pos)
     while seen_cnt ~= 0 do
       for _, pos in pairs(seen) do
         nr, nc = pos.r + move.dr, pos.c + move.dc
-        -- checking if new pos is not seen
-        if not seen[(nr * #board[1]) + nc] then
-          board[nr][nc], board[pos.r][pos.c] = board[pos.r][pos.c], board[nr][nc]
-          -- removing the seen/moved pos
-          seen[(pos.r * #board[1]) + pos.c] = nil
-          seen_cnt = seen_cnt - 1
+        -- skipping to next pos if the pos is in seen
+        if seen[(nr * #board[1]) + nc] then
+          goto next_pos
         end
+        board[nr][nc], board[pos.r][pos.c] = board[pos.r][pos.c], board[nr][nc]
+        -- removing the moved pos from seen to make
+        -- it available for other pos to move to
+        seen[(pos.r * #board[1]) + pos.c] = nil
+        seen_cnt = seen_cnt - 1
+        ::next_pos::
       end
     end
 

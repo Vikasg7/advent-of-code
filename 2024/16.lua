@@ -63,13 +63,13 @@ function StepCost(a, b)
 end
 
 function UniqueId(cols, pos, dir)
-  local abs_pos = (pos.r * cols) + pos.c
+  local abs_pos = ((pos.r - 1) * cols) + pos.c
   local dir_id =  ((dir.dr + 1) * 3) + (dir.dc + 1)
   return abs_pos * 10 + dir_id
 end
 
 function AbsPos(cols, pos)
-  return (pos.r * cols) + pos.c
+  return ((pos.r - 1) * cols) + pos.c
 end
 
 function CheapestPath(board, start_pos)

@@ -118,8 +118,8 @@ function MinSteps(size, bytes, start_pos, end_pos, n)
   return false
 end
 
-function FirstByte(size, bytes, start_pos, end_pos)
-  local l, h = 1, #bytes
+function FirstByte(size, bytes, n, start_pos, end_pos)
+  local l, h = n+1, #bytes
 
   while l < h do
     local m = (l + h) // 2
@@ -138,7 +138,7 @@ function Main()
   local bytes = ParseInput(size)
   local start_pos, end_pos = {r=1, c=1}, {r=size, c=size}
   print("Part1:", MinSteps(size, bytes, start_pos, end_pos, n))
-  print("Part2:", FirstByte(size, bytes, start_pos, end_pos))
+  print("Part2:", FirstByte(size, bytes, n, start_pos, end_pos))
 end
 
 -- time cat 2024/input/18.txt | ./2024/18.lua

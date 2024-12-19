@@ -52,7 +52,6 @@ function PossibleDesigns(patterns, pattern_maxlen, designs)
   local count = 0
 
   for _, design in ipairs(designs) do
-
     if Is_Possible(design, patterns, pattern_maxlen) then
       count =  count + 1
     end

@@ -41,8 +41,8 @@ function AbsPos(cols, pos)
   return ((pos.r - 1) * cols) + pos.c
 end
 
-function UniqueId(cols, cheat_head, cheat_tail)
-  return AbsPos(cols, cheat_head) * 100000 + AbsPos(cols, cheat_tail)
+function UniqueId(cols, src, dst)
+  return AbsPos(cols, src) * 100000 + AbsPos(cols, dst)
 end
 
 function FillDistance(board, start_pos)
@@ -126,9 +126,10 @@ function TwentyPSCheatsCount(board, tracks)
 
           if src.d - dst.d - radius >= 100 then
             cheat = UniqueId(cols, src, dst)
-            if not seen[cheat] then
-              count = count + 1
+            if seen[cheat] then
+              goto next_offset
             end
+            count = count + 1
             seen[cheat] = true
           end
 

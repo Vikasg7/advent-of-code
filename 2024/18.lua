@@ -7,7 +7,7 @@ DIRECTIONS = {
   {dr=-1, dc= 0}
 }
 
-function ParseInput(size)
+function ParseInput()
   local bytes = { }
 
   for line in io.lines() do
@@ -135,7 +135,7 @@ end
 
 function Main()
   local size, n = 71, 1024
-  local bytes = ParseInput(size)
+  local bytes = ParseInput()
   local start_pos, end_pos = {r=1, c=1}, {r=size, c=size}
   print("Part1:", MinSteps(size, bytes, start_pos, end_pos, n))
   print("Part2:", FirstByte(size, bytes, n, start_pos, end_pos))

@@ -82,7 +82,7 @@ function CheapestPath(board, start_pos)
   meta[start_pos.k] = {
     cost=0,
     prev=nil,
-    open=true
+    seen=true
   }
 
   local curr, nr, nc, next_cost_via_pos, next, next_cost
@@ -109,6 +109,10 @@ function CheapestPath(board, start_pos)
         meta[next.k] = { }
       end
 
+      if meta[next.k].seen then
+        goto next_offset
+      end
+
       next_cost_via_pos = meta[curr.k].cost + StepCost(curr.d, next.d)
       next_cost = meta[next.k].cost or math.maxinteger
       if next_cost_via_pos >= next_cost then
@@ -117,10 +121,8 @@ function CheapestPath(board, start_pos)
 
       meta[next.k].cost = next_cost_via_pos
       meta[next.k].prev = curr
-      if not meta[next.k].open then
-        table.insert(open, next)
-        meta[next.k].open = true
-      end
+      meta[next.k].seen = true
+      table.insert(open, next)
       ::next_offset::
     end
   end
@@ -156,7 +158,7 @@ function AllCheapestPathsTilesCount(board, start_pos)
   meta[start_pos.k] = {
     cost=0,
     prev={ },
-    open=true
+    seen=true
   }
 
   local curr, nr, nc, next_cost_via_pos, next, next_cost
@@ -196,9 +198,9 @@ function AllCheapestPathsTilesCount(board, start_pos)
 
       meta[next.k].cost = next_cost_via_pos
       meta[next.k].prev = { curr }
-      if not meta[next.k].open then
+      if not meta[next.k].seen then
         table.insert(open, next)
-        meta[next.k].open = true
+        meta[next.k].seen = true
       end
       ::next_offset::
     end

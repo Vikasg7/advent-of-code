@@ -25,4 +25,8 @@ function math.is_integer(num)
   return num == math.floor(num)
 end
 
+function table.join(t1, t2)
+  table.move(t2, 1, #t2, #t1 + 1, t1)
+end
+
 return utils

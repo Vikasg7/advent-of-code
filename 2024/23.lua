@@ -72,10 +72,12 @@ function ConnectedSet(network_map, start_node)
   while #open > 0 do
     local node = table.remove(open, 1)
     for _, edge in pairs(network_map[node]) do
-      if table.contains(set, edge) then goto next_edge end
-      if edge == node then goto next_edge end
-      if node > edge then goto next_edge end
-      if not ConnectedWith(network_map, edge, set) then goto next_edge end
+      if edge == node or
+         node > edge or
+         table.contains(set, edge) or
+         not ConnectedWith(network_map, edge, set) then
+          goto next_edge
+      end
       table.insert(set, edge)
       table.insert(open, edge)
       ::next_edge::

@@ -55,6 +55,7 @@ function CountSetOfThreeImproved(network_map)
   return count
 end
 
+-- Checks if `node` is connected with all members of `set`
 function ConnectedWith(network_map, node, set)
   local haystack = network_map[node]
   for _, needle in pairs(set) do

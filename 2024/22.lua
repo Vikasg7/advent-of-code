@@ -41,23 +41,23 @@ function MaximizeBananas(secret_nums, n)
     local seq = { 0 }
     local seen = { }
     local next
-    for _ = 1, 4 do
+    for _ = 1, 3 do
       secret_num = Evolve(secret_num)
       next = secret_num % 10
       table.insert(seq, next - prev)
       prev = next
     end
-    for _ = 5, n do
+    for _ = 4, n do
       table.remove(seq, 1)
-      local key = UniqueId(seq)
-      if not seen[key] then
-        seen[key] = true
-        seq_to_total[key] = (seq_to_total[key] or 0) + prev
-      end
       secret_num = Evolve(secret_num)
       next = secret_num % 10
       table.insert(seq, next - prev)
       prev = next
+      local key = UniqueId(seq)
+      if seen[key] then goto next_iter end
+      seen[key] = true
+      seq_to_total[key] = (seq_to_total[key] or 0) + prev
+      ::next_iter::
     end
   end
 

@@ -145,55 +145,40 @@ function PrecomputeShortestPaths(board, btn_pos_map)
   return map
 end
 
-
-function CacheKey(_, btnX, btnY, depth)
+function CacheKey(_, _, btnX, btnY, depth)
   return btnX..btnY..depth
 end
 
-CalcMinPathLength = MemoizeWith(CacheKey, function (board_paths, btnX, btnY, depth)
+CalcMinPathLength = MemoizeWith(CacheKey, function (keypad_paths, remote_paths, btnX, btnY, depth)
   local key = btnX .. btnY
+  local board_paths = string.find(key, "[<^>v]") and remote_paths or keypad_paths
   if depth == 1 then
     return #board_paths[key][1]
   end
   local minlen = math.maxinteger
   for _, path in ipairs(board_paths[key]) do
-    local len, x = 0, "A"
-    for y in string.gmatch(path, ".") do
-      len = len + CalcMinPathLength(board_paths, x, y, depth-1)
-      x = y
-    end
+    local len = MinPathLen(keypad_paths, remote_paths, path, depth-1)
     minlen = math.min(minlen, len)
   end
   return minlen
 end)
 
-function MinPathLen(board_paths, code, depth)
+function MinPathLen(keypad_paths, remote_paths, code, depth)
   local len, x = 0, "A"
   for y in string.gmatch(code, ".") do
-    len = len + CalcMinPathLength(board_paths, x, y, depth)
+    len = len + CalcMinPathLength(keypad_paths, remote_paths, x, y, depth)
     x = y
   end
   return len
 end
 
-function Complexity(keypad_paths, remote_paths, code, depth)
-  local total_len, a = 0, "A"
-  for b in string.gmatch(code, ".") do
-    local minlen = math.maxinteger
-    for _, path in ipairs(keypad_paths[a .. b]) do
-      local len = MinPathLen(remote_paths, path, depth)
-      minlen = math.min(minlen, len)
-    end
-    total_len = total_len + minlen
-    a = b
-  end
-  return total_len * tonumber(string.sub(code, 1, #code-1))
-end
-
 function TotalComplexity(keypad_paths, remote_paths, codes, RobotCnt)
   local sum = 0
   for _, code in ipairs(codes) do
-    sum = sum + Complexity(keypad_paths, remote_paths, code, RobotCnt)
+    -- depth = RobotCnt + 1 to include the last manual step
+    local length = MinPathLen(keypad_paths, remote_paths, code, RobotCnt+1)
+    local complexity = length * tonumber(string.sub(code, 1, #code-1))
+    sum = sum + complexity
   end
   return sum
 end
@@ -203,7 +188,7 @@ function Main()
   local keypad_paths = PrecomputeShortestPaths(KEYPAD, KEYPAD_POS)
   local remote_paths = PrecomputeShortestPaths(REMOTE, REMOTE_POS)
   print("Part1:", TotalComplexity(keypad_paths, remote_paths, codes, 2))
-  print("Part1:", TotalComplexity(keypad_paths, remote_paths, codes, 25))
+  print("Part2:", TotalComplexity(keypad_paths, remote_paths, codes, 25))
 end
 
 -- time cat 2024/input/21.txt | ./2024/21.lua

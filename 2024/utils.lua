@@ -58,4 +58,12 @@ function table.join(t1, t2)
   table.move(t2, 1, #t2, #t1 + 1, t1)
 end
 
+
+function table.reverse(tbl)
+  local n = #tbl
+  for i = 1, math.floor(n / 2) do
+    tbl[i], tbl[n - i + 1] = tbl[n - i + 1], tbl[i]
+  end
+end
+
 return utils
